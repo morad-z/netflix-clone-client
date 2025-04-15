@@ -1,9 +1,12 @@
 import { QueryClient } from "@tanstack/react-query";
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+// Ensure API_URL doesn't end with a slash
+const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5001').replace(/\/$/, '');
 
 export async function apiRequest(method, endpoint, data = null) {
-  const fullUrl = endpoint.startsWith('http') ? endpoint : `${API_URL}${endpoint}`;
+  // Ensure endpoint starts with a slash
+  const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const fullUrl = endpoint.startsWith('http') ? endpoint : `${API_URL}${path}`;
 
   console.log(`Making ${method} request to ${fullUrl}`, data);
 
@@ -41,7 +44,8 @@ export const getQueryFn =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const url = queryKey[0];
-    const fullUrl = url.startsWith('http') ? url : `${API_URL}${url}`;
+    const path = url.startsWith('/') ? url : `/${url}`;
+    const fullUrl = url.startsWith('http') ? url : `${API_URL}${path}`;
     const res = await apiRequest('GET', fullUrl);
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
