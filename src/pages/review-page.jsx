@@ -6,7 +6,7 @@ import Header from "@/components/layout/header";
 import ReviewForm from "@/components/content/review-form";
 import { Button } from "@/components/ui/button";
 import { getTMDbImageUrl } from "@/lib/utils";
-import { FALLBACK_BACKDROP, ROUTES } from "@/lib/constants";
+import { ROUTES } from "@/lib/constants";
 
 export default function ReviewPage() {
   const params = useParams();
@@ -48,7 +48,7 @@ export default function ReviewPage() {
   );
 
   const isLoading = isContentLoading || isReviewsLoading || !activeProfile;
-console.log(contentDetails)
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
